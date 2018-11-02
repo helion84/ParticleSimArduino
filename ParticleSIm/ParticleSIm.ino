@@ -21,7 +21,7 @@
 #define COL_7 A2
 #define COL_8 A3
 
-#define particleNumber 1
+#define particleNumber 3
 
 const byte rows[] = {
 	ROW_1, ROW_2, ROW_3, ROW_4, ROW_5, ROW_6, ROW_7, ROW_8
@@ -29,8 +29,8 @@ const byte rows[] = {
 
 byte output[] = { B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000,B00000000 };
 
-int molSpeed = 5;
-int molRadius = 1;
+int particleSpeed = 2;
+int particleRadius = 1;
 int width = 8;
 int height = 8;
 
@@ -50,11 +50,16 @@ void setup() {
 	pinMode(A3, OUTPUT);
 
 	for (int i = 0; i < particleNumber; i++) {
-		randomAngle = int(random(360));
+		delay(2);
 		molStore[i][0] = int(random((0.25*width), (0.75*width)));
+		delay(2);
 		molStore[i][1] = int(random((0.25*height), (0.75*height)));
-		molStore[i][2] = int(sin(randomAngle)*molSpeed);
-		molStore[i][3] = int(cos(randomAngle)*molSpeed);
+		delay(2);
+		randomAngle = int(random(360));
+		molStore[i][2] = int(sin(randomAngle) * particleSpeed);
+		delay(2);
+		randomAngle = int(random(360));
+		molStore[i][3] = int(cos(randomAngle) * particleSpeed);
 	}
 }
 
@@ -64,10 +69,10 @@ void loop() {
 		deltaX = molStore[i][2];
 		deltaY = molStore[i][3];
 
-		if (molStore[i][0]>width - molRadius || molStore[i][0]<molRadius) {
+		if (molStore[i][0] > width - particleRadius || molStore[i][0] < particleRadius) {
 			deltaX = -deltaX;
 		}
-		if (molStore[i][1]>height - molRadius || molStore[i][1]<molRadius) {
+		if (molStore[i][1] > height - particleRadius || molStore[i][1] < particleRadius) {
 			deltaY = -deltaY;
 		}
 
@@ -109,7 +114,7 @@ void  drawScreen(byte buffer2[]) {
 	for (byte i = 0; i < 8; i++) {
 		setColumns(buffer2[i]); // Set columns for this specific row       
 		digitalWrite(rows[i], HIGH);
-		delay(2); // Set this to 50 or 100 if you want to see the multiplexing effect!
+		delay(50); // Set this to 50 or 100 if you want to see the multiplexing effect!
 		digitalWrite(rows[i], LOW);
 	}
 }
